@@ -1,0 +1,25 @@
+---
+kibana_version: "6.x"
+
+kibana_apt_key_url: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+kibana_apt_repo: "deb https://artifacts.elastic.co/packages/{{ kibana_version }}/apt stable main"
+
+kibana_package: kibana
+kibana_package_state: present
+
+kibana_service_state: started
+kibana_service_enabled: true
+
+kibana_search_config_path: "{{ playbook_dir }}/files/groups/{{ item }}/kibana"
+kibana_search_config_paths: []
+
+kibana_host_config_file_path: "{{ kibana_host_config_path | default(inventory_hostname) }}/kibana.yml.j2"
+kibana_config_file_path: /etc/kibana/kibana.yml
+kibana_config_path: /etc/kibana
+
+kibana_server_port: 5601
+kibana_server_host: "0.0.0.0"
+
+kibana_elasticsearch_url: "http://localhost:9200"
+kibana_elasticsearch_username: ""
+kibana_elasticsearch_password: ""

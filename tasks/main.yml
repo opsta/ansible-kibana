@@ -1,0 +1,9 @@
+---
+- include_tasks: kibana_pre.yml
+- include_tasks: kibana_install.yml
+
+- block: # Config Kibana
+  - include_tasks: kibana_search_config.yml
+  - include_tasks: kibana_post.yml
+  tags:
+    - kibana-config

@@ -1,0 +1,30 @@
+---
+- name: Set list of path to look for local kibana configuration directory
+  set_fact:
+    kibana_search_config_paths: "{{ kibana_search_config_paths }} + [ '{{ kibana_search_config_path }}' ]"
+  with_items: "{{ group_names }}"
+
+- name: Check if Kibana configuration directory exists
+  stat:
+    path: "{{ item }}"
+  register: kibana_config_check
+  become: false
+  delegate_to: 127.0.0.1
+  with_first_found:
+    - files: "{{ kibana_search_config_paths }}"
+      skip: true
+
+- name: Set Kibana configuration directory
+  set_fact:
+    kibana_host_config_path: "{{ kibana_config_check.results[0].stat.path }}"
+  when:
+    - kibana_config_check.results[0] is defined
+    - kibana_config_check.results[0].stat is defined
+    - kibana_config_check.results[0].stat.isdir
+
+- name: Check if kibana template configuration file is exists
+  stat:
+    path: "{{ kibana_host_config_file_path }}"
+  become: false
+  delegate_to: 127.0.0.1
+  register: kibana_config_check

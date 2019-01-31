@@ -1,4 +1,66 @@
 ---
+- name: Install Kibana X-Pack plugin (For version 5.x only)
+  shell: "/usr/share/kibana/bin/kibana-plugin install -s x-pack"
+  when: kibana_major_version == 5
+  register: kibana_xpack
+  ignore_errors: true
+  failed_when: kibana_xpack.rc != 70
+
+- name: Create Kibana log folder
+  file:
+    path: "{{ kibana_log_path }}"
+    state: directory
+    owner: kibana
+    group: kibana
+    mode: 0700
+
+- name: Create Kibana SSL folder
+  file:
+    path: "{{ kibana_ssl_path }}"
+    state: directory
+    owner: kibana
+    group: kibana
+    mode: 0700
+  when: kibana_ssl_enabled
+
+- name: Copy Kibana SSL private key file
+  copy:
+    src: "{{ kibana_host_ssl_key_file_path }}"
+    dest: "{{  kibana_ssl_key_file_path }}"
+    owner: kibana
+    group: kibana
+    mode: 0600
+  when: 
+    - kibana_ssl_enabled
+    - kibana_ssl_key_check.stat.exists
+    - kibana_ssl_cert_check.stat.exists
+  notify: Restart Kibana
+
+- name: Copy Kibana SSL certificate file
+  copy:
+    src: "{{ kibana_host_ssl_cert_file_path }}"
+    dest: "{{  kibana_ssl_cert_file_path }}"
+    owner: kibana
+    group: kibana
+    mode: 0600
+  when: 
+    - kibana_ssl_enabled 
+    - kibana_ssl_key_check.stat.exists
+    - kibana_ssl_cert_check.stat.exists
+  notify: Restart Kibana
+
+- name: Copy Kibana CA file
+  copy:
+    src: "{{ kibana_host_ssl_ca_file_path }}"
+    dest: "{{  kibana_ssl_ca_file_path }}"
+    owner: kibana
+    group: kibana
+    mode: 0600
+  when: 
+    - kibana_ssl_enabled
+    - kibana_ssl_ca_check.stat.exists
+  notify: Restart Kibana
+
 - name: Copy Kibana configuration file
   template:
     src: "{{ kibana_host_config_file_path }}"
@@ -8,3 +70,5 @@
     mode: 0644
   when: kibana_config_check.stat.exists
   notify: Restart Kibana
+  
+- meta: flush_handlers

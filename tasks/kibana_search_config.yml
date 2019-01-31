@@ -22,9 +22,30 @@
     - kibana_config_check.results[0].stat is defined
     - kibana_config_check.results[0].stat.isdir
 
-- name: Check if kibana template configuration file is exists
+- name: Check if Kibana configuration file is exists
   stat:
     path: "{{ kibana_host_config_file_path }}"
   become: false
   delegate_to: 127.0.0.1
   register: kibana_config_check
+
+- name: Check if Kibana SSL private key file is exists
+  stat:
+    path: "{{ kibana_host_ssl_key_file_path }}"
+  become: false
+  delegate_to: 127.0.0.1
+  register: kibana_ssl_key_check
+
+- name: Check if Kibana SSL certificate file is exists
+  stat:
+    path: "{{ kibana_host_ssl_cert_file_path }}"
+  become: false
+  delegate_to: 127.0.0.1
+  register: kibana_ssl_cert_check
+
+- name: Check if Kibana SSL CA file is exists
+  stat:
+    path: "{{ kibana_host_ssl_ca_file_path }}"
+  become: false
+  delegate_to: 127.0.0.1
+  register: kibana_ssl_ca_check

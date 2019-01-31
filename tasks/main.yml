@@ -1,9 +1,13 @@
 ---
 - include_tasks: kibana_pre.yml
+  when: inventory_hostname in groups['kibana']
 - include_tasks: kibana_install.yml
-
+  when: inventory_hostname in groups['kibana']
+  
 - block: # Config Kibana
   - include_tasks: kibana_search_config.yml
   - include_tasks: kibana_post.yml
+  - include_tasks: kibana_user.yml
+  when: inventory_hostname in groups['kibana']
   tags:
     - kibana-config

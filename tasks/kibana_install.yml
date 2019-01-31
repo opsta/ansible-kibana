@@ -1,10 +1,12 @@
 ---
-- name: Install Kibana.
-  package:
-    name: "{{ kibana_package }}"
-    state: "{{ kibana_package_state }}"
-- name: Ensure Kibana is started and enabled at boot.
+- name: Install Kibana
+  apt:
+    name: kibana
+    state: present
+    update_cache: yes
+
+- name: Ensure service enabled
   service:
     name: kibana
-    state: "{{ kibana_service_state }}"
-    enabled: "{{ kibana_service_enabled }}"
+    enabled: yes
+    state: started

@@ -1,0 +1,11 @@
+---
+- name: Update Kibana user on Elasticsearch
+  uri:
+    method: PUT
+    url: "{{ kibana_elasticsearch_url }}/_xpack/security/user/kibana/_password"
+    body_format: json
+    body: "{\"password\":\"{{ kibana_password }}\"}"
+    return_content: yes
+    user: "{{ elasticsearch_username | default('elastic') }}"
+    password: "{{ elasticsearch_password | default('changeme') }}"
+  register: kibana_update_user

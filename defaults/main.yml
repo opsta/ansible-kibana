@@ -2,6 +2,7 @@
 kibana_major_version: 6
 kibana_apt_key_url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 kibana_apt_repo: deb https://artifacts.elastic.co/packages/{{ elasticsearch_major_version }}.x/apt stable main
+kibana_apt_package: kibana
 
 kibana_log_path: /var/log/kibana
 kibana_server_port: 5601

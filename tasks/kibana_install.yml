@@ -1,7 +1,7 @@
 ---
 - name: Install Kibana
   apt:
-    name: {{ kibana_apt_package }}
+    name: "{{ kibana_apt_package }}"
     state: present
     update_cache: yes
 

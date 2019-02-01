@@ -20,8 +20,8 @@ Also with various configuration:
 - `kibana_host_ssl_key_file_path`: SSL private key on your host
 - `kibana_host_ssl_cert_file_path`: SSL certificate on your host
 - `kibana_host_ssl_ca_file_path`: SSL CA on your host (optional)
-- `kibana_elasticsearch_url`: 
-- `kibana_password`: 
+- `kibana_elasticsearch_url`: Specified which elasticsearch URL to connect. Default at `http://localhost:9200`
+- `kibana_password`: Specified password for built-in `kibana` user on Elasticsearch server/cluster
 
 ## Dependencies
 

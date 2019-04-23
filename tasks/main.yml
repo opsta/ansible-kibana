@@ -6,8 +6,12 @@
   
 - block: # Config Kibana
   - include_tasks: kibana_search_config.yml
+    when: inventory_hostname in groups['kibana']
   - include_tasks: kibana_post.yml
+    when: inventory_hostname in groups['kibana']
   - include_tasks: kibana_user.yml
-  when: inventory_hostname in groups['kibana']
+    when:
+      - inventory_hostname in groups['kibana']
+      - elasticsearch_license_check.stat.exists
   tags:
     - kibana-config

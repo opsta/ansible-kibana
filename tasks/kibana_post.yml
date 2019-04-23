@@ -63,7 +63,7 @@
 
 - name: Copy Kibana configuration file
   template:
-    src: "{{ kibana_host_config_file_path }}"
+    src: "kibana.yml.j2"
     dest: "{{ kibana_config_file_path }}"
     owner: root
     group: root
